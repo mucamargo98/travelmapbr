@@ -5,33 +5,30 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Meu mapa de viagens</title>
 <style>
-:root{--bg:#f4f2ed;--paper:#fffefa;--ink:#202a35;--muted:#78818a;--line:#e5e1d8;--accent:#e76f51;--visited:#e76f51;--sea:#e9f0f1;--land:#d8dedb}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
-main{max-width:1120px;margin:auto;padding:30px 18px 60px}
-header{text-align:center;margin:4px 0 24px}.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.16em;color:var(--accent)}
+:root{--bg:#f4f2ed;--paper:#fffefa;--ink:#202a35;--muted:#78818a;--line:#e5e1d8;--accent:#e76f51;--sea:#e9f0f1;--land:#d8dedb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1120px;margin:auto;padding:30px 18px 60px}header{text-align:center;margin:4px 0 24px}
+.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.16em;color:var(--accent)}
 h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05;letter-spacing:-.05em;margin:8px 0}.sub{color:var(--muted);margin:0 auto;max-width:54ch}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
 .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 25px #24303b08}
 .map-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.map-head strong{font-size:.95rem}.count{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
-#mapwrap{background:var(--sea);border-radius:14px;overflow:hidden;min-height:300px;display:grid;place-items:center}
+#mapwrap{background:var(--sea);border-radius:14px;overflow:hidden;min-height:250px}
 #world{width:100%;height:auto;display:block;touch-action:pan-y}
 .country{fill:var(--land);stroke:#fffefa;stroke-width:.55;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .15s}
-.country:hover{fill:#b6c5c2}.country.visited{fill:var(--visited)}.country.visited:hover{fill:#d85e43}
-.legend{display:flex;gap:16px;align-items:center;color:var(--muted);font-size:.78rem;margin-top:10px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:5px;background:var(--land)}.dot.yes{background:var(--visited)}
+.country:hover{fill:#b6c5c2}.country.visited{fill:var(--accent)}.country.visited:hover{fill:#d85e43}
+.legend{display:flex;gap:16px;align-items:center;color:var(--muted);font-size:.78rem;margin-top:10px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:5px;background:var(--land)}.dot.yes{background:var(--accent)}
 aside{display:grid;gap:14px}.panel h2{font-size:1rem;margin:0 0 12px}
 label{font-size:.82rem;font-weight:700;display:block;margin-bottom:6px}
-select,input{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;padding:11px;color:var(--ink);font:inherit}
-button{font:inherit;cursor:pointer}.btn{width:100%;border:0;border-radius:11px;padding:12px 14px;background:var(--accent);color:#fff;font-weight:800}.btn:disabled{opacity:.5;cursor:wait}
+select{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;padding:11px;color:var(--ink);font:inherit}
+button{font:inherit;cursor:pointer}.btn{width:100%;border:0;border-radius:11px;padding:12px 14px;background:var(--accent);color:#fff;font-weight:800}.btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.secondary{background:#263544}.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);margin-top:8px}
-.small{font-size:.78rem;color:var(--muted);margin:9px 0 0}
-.chips{display:flex;flex-wrap:wrap;gap:7px;max-height:230px;overflow:auto}
+.small{font-size:.78rem;color:var(--muted);margin:9px 0 0}.chips{display:flex;flex-wrap:wrap;gap:7px;max-height:230px;overflow:auto}
 .chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 10px;font-size:.78rem}
-.chip:after{content:" ×";color:var(--accent);font-weight:900}
-.empty{font-size:.86rem;color:var(--muted)}
-.status{font-size:.82rem;color:var(--muted);padding:10px;text-align:center}
-#poster{display:none}
+.chip:after{content:" ×";color:var(--accent);font-weight:900}.empty{font-size:.86rem;color:var(--muted)}
+.status{font-size:.86rem;color:var(--muted);padding:24px;text-align:center}
 @media(max-width:800px){.layout{grid-template-columns:1fr}aside{grid-template-columns:1fr 1fr}.panel.countries{grid-column:1/-1}}
-@media(max-width:520px){main{padding:22px 12px 40px}.panel{padding:13px}aside{grid-template-columns:1fr}#mapwrap{min-height:210px}.map-head{align-items:flex-start;flex-direction:column}}
+@media(max-width:520px){main{padding:22px 12px 40px}.panel{padding:13px}aside{grid-template-columns:1fr}.map-head{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -40,96 +37,85 @@ button{font:inherit;cursor:pointer}.btn{width:100%;border:0;border-radius:11px;p
 <div class="layout">
 <section class="panel">
  <div class="map-head"><strong>Toque nos países para marcar ou desmarcar</strong><span class="count" id="count">0 países visitados</span></div>
- <div id="mapwrap"><div class="status" id="status">Carregando o mapa do mundo…</div><svg id="world" viewBox="0 0 960 500" role="img" aria-label="Mapa-múndi interativo"></svg></div>
+ <div id="mapwrap"><div class="status" id="status">Carregando o mapa do mundo…</div><svg id="world" viewBox="0 0 960 500" role="img" aria-label="Mapa-múndi interativo" style="display:none"></svg></div>
  <div class="legend"><span><i class="dot yes"></i>Já visitei</span><span><i class="dot"></i>Ainda não fui</span></div>
 </section>
 <aside>
- <section class="panel">
-  <h2>Adicionar país</h2>
-  <label for="countrySelect">Encontre na lista</label><select id="countrySelect" disabled><option>Carregando países…</option></select>
-  <button class="btn" id="addCountry" style="margin-top:9px" disabled>Marcar como visitado</button>
-  <p class="small">Você também pode clicar diretamente no mapa.</p>
- </section>
- <section class="panel">
-  <h2>Seu resumo</h2><div class="count" id="summary">0 de 0 países</div>
-  <p class="small">Os países marcados ficam salvos neste navegador.</p>
-  <button class="btn secondary" id="export" disabled style="margin-top:12px">Baixar imagem para postar</button>
-  <button class="btn ghost" id="clear">Limpar seleção</button>
- </section>
- <section class="panel countries">
-  <h2>Países visitados</h2><div class="chips" id="chips"><span class="empty">Nenhum país marcado ainda.</span></div>
- </section>
+ <section class="panel"><h2>Adicionar país</h2><label for="countrySelect">Encontre na lista</label><select id="countrySelect" disabled><option>Carregando países…</option></select><button class="btn" id="addCountry" style="margin-top:9px" disabled>Marcar como visitado</button><p class="small">Você também pode clicar diretamente no mapa.</p></section>
+ <section class="panel"><h2>Seu resumo</h2><div class="count" id="summary">0 países visitados</div><p class="small">Suas marcações ficam salvas neste navegador.</p><button class="btn secondary" id="export" disabled style="margin-top:12px">Baixar imagem para postar</button><button class="btn ghost" id="clear">Limpar seleção</button></section>
+ <section class="panel countries"><h2>Países visitados</h2><div class="chips" id="chips"><span class="empty">Nenhum país marcado ainda.</span></div></section>
 </aside>
 </div>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script>
 (() => {
- const svg=document.getElementById('world'), status=document.getElementById('status'), select=document.getElementById('countrySelect');
- const visited=new Set(JSON.parse(localStorage.getItem('visited-countries-v1')||'[]'));
- let features=[], path, projection;
- const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ "use strict";
+ const svg=document.getElementById('world'),status=document.getElementById('status'),select=document.getElementById('countrySelect');
+ let visited=new Set(),features=[],pathGenerator;
+ try { const saved=JSON.parse(localStorage.getItem('visited-countries-v1')||'[]'); if(Array.isArray(saved)) visited=new Set(saved.filter(x=>typeof x==='string')); } catch(e) { visited=new Set(); }
+ const nameOf=f=>f.properties?.ADMIN||f.properties?.name||f.properties?.NAME||'';
+ const safe=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function update(){
-  localStorage.setItem('visited-countries-v1',JSON.stringify([...visited]));
+  try{localStorage.setItem('visited-countries-v1',JSON.stringify([...visited]));}catch(e){}
   document.getElementById('count').textContent=`${visited.size} ${visited.size===1?'país visitado':'países visitados'}`;
-  document.getElementById('summary').textContent=`${visited.size} de ${features.length} países`;
-  document.getElementById('chips').innerHTML=visited.size?[...visited].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(n=>`<button class="chip" data-country="${esc(n)}" title="Remover ${esc(n)}">${esc(n)}</button>`).join(''):'<span class="empty">Nenhum país marcado ainda.</span>';
+  document.getElementById('summary').textContent=`${visited.size} ${visited.size===1?'país visitado':'países visitados'}`;
+  document.getElementById('chips').innerHTML=visited.size?[...visited].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(n=>`<button class="chip" data-country="${safe(n)}" title="Remover ${safe(n)}">${safe(n)}</button>`).join(''):'<span class="empty">Nenhum país marcado ainda.</span>';
   document.querySelectorAll('.country').forEach(el=>el.classList.toggle('visited',visited.has(el.dataset.name)));
   document.getElementById('export').disabled=!features.length;
  }
- function toggle(name){if(visited.has(name))visited.delete(name);else visited.add(name);update();}
+ function toggle(name){if(!name)return;if(visited.has(name))visited.delete(name);else visited.add(name);update();}
  document.getElementById('chips').addEventListener('click',e=>{const b=e.target.closest('[data-country]');if(b)toggle(b.dataset.country);});
- document.getElementById('addCountry').addEventListener('click',()=>{const n=select.value;if(n) {visited.add(n);update();}});
+ document.getElementById('addCountry').addEventListener('click',()=>{if(select.value) {visited.add(select.value);update();}});
  document.getElementById('clear').addEventListener('click',()=>{if(confirm('Quer remover todos os países marcados?')){visited.clear();update();}});
  async function init(){
   try{
-   if(!window.d3)throw new Error('Não foi possível carregar a biblioteca do mapa. Verifique sua conexão e recarregue.');
-   const data=await fetch('https://raw.githubusercontent.com/deldesierto/world-geojson/master/countries.geojson').then(r=>{if(!r.ok)throw new Error('Falha ao carregar os países.');return r.json();});
-   features=data.features.filter(f=>f.properties && (f.properties.ADMIN||f.properties.name));
-   projection=d3.geoNaturalEarth1().fitExtent([[8,8],[952,492]],{type:'FeatureCollection',features});
-   path=d3.geoPath(projection);
-   svg.innerHTML='';
+   if(!window.d3)throw new Error('A biblioteca do mapa não carregou. Confira sua conexão e atualize a página.');
+   const urls=[
+    'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson',
+    'https://raw.githubusercontent.com/deldesierto/world-geojson/master/countries.geojson'
+   ];
+   let data=null,lastError=null;
+   for(const url of urls){try{const response=await fetch(url);if(!response.ok)throw new Error(`HTTP ${response.status}`);data=await response.json();if(data?.features?.length)break;data=null;}catch(err){lastError=err;}}
+   if(!data?.features?.length)throw new Error('Não foi possível baixar os dados geográficos. Verifique sua conexão e tente novamente.');
+   features=data.features.filter(f=>nameOf(f));
+   if(!features.length)throw new Error('Os dados do mapa vieram vazios.');
+   const projection=d3.geoNaturalEarth1().fitExtent([[8,8],[952,492]],{type:'FeatureCollection',features});
+   pathGenerator=d3.geoPath(projection);
    const g=d3.select(svg).append('g');
-   g.selectAll('path').data(features).join('path').attr('class','country').attr('data-name',d=>d.properties.ADMIN||d.properties.name)
-    .attr('d',path).attr('tabindex',0).attr('role','button')
-    .attr('aria-label',d=>d.properties.ADMIN||d.properties.name)
-    .on('click',(event,d)=>toggle(d.properties.ADMIN||d.properties.name))
-    .on('keydown',(event,d)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(d.properties.ADMIN||d.properties.name);}});
-   const names=features.map(f=>f.properties.ADMIN||f.properties.name).sort((a,b)=>a.localeCompare(b,'pt-BR'));
-   select.innerHTML='<option value="">Selecione um país…</option>'+names.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
+   g.selectAll('path').data(features).join('path')
+    .attr('class','country').attr('data-name',nameOf).attr('d',pathGenerator)
+    .attr('tabindex',0).attr('role','button').attr('aria-label',nameOf)
+    .append('title').text(nameOf);
+   g.selectAll('path').on('click',(event,d)=>toggle(nameOf(d)))
+    .on('keydown',(event,d)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(nameOf(d));}});
+   const names=[...new Set(features.map(nameOf))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+   select.innerHTML='<option value="">Selecione um país…</option>'+names.map(n=>`<option value="${safe(n)}">${safe(n)}</option>`).join('');
    select.disabled=false;document.getElementById('addCountry').disabled=false;
-   status.remove();update();
-  }catch(err){status.textContent=err.message+' Você ainda pode tentar recarregar a página.';}
+   status.remove();svg.style.display='block';update();
+  }catch(err){status.textContent=err.message;const retry=document.createElement('button');retry.className='btn';retry.textContent='Tentar novamente';retry.style.maxWidth='220px';retry.style.display='block';retry.style.margin='12px auto 0';retry.onclick=()=>{status.textContent='Carregando o mapa do mundo…';retry.remove();init();};status.appendChild(retry);}
  }
  function exportPoster(){
-  const width=1600,height=1100, mapX=70,mapY=230,mapW=1460,mapH=700;
-  const proj=d3.geoNaturalEarth1().fitExtent([[mapX,mapY],[mapX+mapW,mapY+mapH]],{type:'FeatureCollection',features});
-  const p=d3.geoPath(proj);
-  const mapPaths=features.map(f=>{
-   const name=f.properties.ADMIN||f.properties.name;
-   const d=p(f);if(!d)return '';
-   return `<path d="${d}" fill="${visited.has(name)?'#e76f51':'#d8dedb'}" stroke="#fffefa" stroke-width="1.2"/>`;
-  }).join('');
-  const list=[...visited].sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  const title='MEU MAPA DE VIAGENS';
-  const subtitle=`${list.length} ${list.length===1?'país visitado':'países visitados'} e muitas histórias pelo mundo`;
+  if(!features.length||!window.d3)return;
+  const width=1600,height=1100,mapX=70,mapY=230,mapW=1460,mapH=700;
+  const projection=d3.geoNaturalEarth1().fitExtent([[mapX,mapY],[mapX+mapW,mapY+mapH]],{type:'FeatureCollection',features});
+  const p=d3.geoPath(projection);
+  const mapPaths=features.map(f=>{const d=p(f);if(!d)return '';return `<path d="${d}" fill="${visited.has(nameOf(f))?'#e76f51':'#d8dedb'}" stroke="#fffefa" stroke-width="1.2"/>`;}).join('');
+  const subtitle=`${visited.size} ${visited.size===1?'país visitado':'países visitados'} e muitas histórias pelo mundo`;
   const svgText=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   <rect width="100%" height="100%" fill="#f4f2ed"/>
   <text x="80" y="100" font-family="Arial,sans-serif" font-size="30" font-weight="bold" letter-spacing="8" fill="#e76f51">MEU PASSAPORTE, MINHAS HISTÓRIAS</text>
-  <text x="80" y="175" font-family="Arial,sans-serif" font-size="66" font-weight="bold" fill="#202a35">${title}</text>
-  <text x="84" y="220" font-family="Arial,sans-serif" font-size="28" fill="#78818a">${subtitle}</text>
+  <text x="80" y="175" font-family="Arial,sans-serif" font-size="66" font-weight="bold" fill="#202a35">MEU MAPA DE VIAGENS</text>
+  <text x="84" y="220" font-family="Arial,sans-serif" font-size="28" fill="#78818a">${safe(subtitle)}</text>
   ${mapPaths}
   <circle cx="95" cy="1000" r="11" fill="#e76f51"/><text x="120" y="1010" font-family="Arial,sans-serif" font-size="24" fill="#202a35">Países que já conheci</text>
-  <text x="1520" y="1010" text-anchor="end" font-family="Arial,sans-serif" font-size="20" fill="#78818a">E o próximo destino?</text>
-  </svg>`;
+  <text x="1520" y="1010" text-anchor="end" font-family="Arial,sans-serif" font-size="20" fill="#78818a">E o próximo destino?</text></svg>`;
   const blob=new Blob([svgText],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),img=new Image();
-  img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);URL.revokeObjectURL(url);canvas.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='meu-mapa-de-viagens.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);},'image/png');};
-  img.onerror=()=>{URL.revokeObjectURL(url);alert('Não foi possível gerar a imagem. Tente novamente.');};
-  img.src=url;
+  img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);URL.revokeObjectURL(url);canvas.toBlob(b=>{if(!b){alert('Não foi possível gerar a imagem.');return;}const a=document.createElement('a');const downloadUrl=URL.createObjectURL(b);a.href=downloadUrl;a.download='meu-mapa-de-viagens.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(downloadUrl),1500);},'image/png');};
+  img.onerror=()=>{URL.revokeObjectURL(url);alert('Não foi possível gerar a imagem. Tente novamente.');};img.src=url;
  }
  document.getElementById('export').addEventListener('click',exportPoster);
  init();
 })();
 </script>
-</body>
-</html>
+</body></html>
